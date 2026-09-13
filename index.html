@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>OTP Testing</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f2f5f9;
+      padding: 20px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 380px;
+      background: #ffffff;
+      padding: 30px 25px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 25px;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .phone-input {
+      display: flex;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .country-code {
+      background: #f3f4f6;
+      padding: 13px 12px;
+      color: #374151;
+      font-size: 15px;
+    }
+
+    input {
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 13px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #15803d;
+      display: none;
+    }
+
+    .note {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-card">
+
+    <div class="logo">OTP</div>
+
+    <h1>OTP Testing</h1>
+
+    <p class="subtitle">
+      Enter your mobile number to continue
+    </p>
+
+    <form id="otpForm">
+
+      <label for="mobile">Mobile Number</label>
+
+      <div class="phone-input">
+        <span class="country-code">+91</span>
+
+        <input
+          type="tel"
+          id="mobile"
+          placeholder="Enter 10-digit number"
+          maxlength="10"
+          inputmode="numeric"
+          required
+        >
+      </div>
+
+      <button type="submit">
+        Submit
+      </button>
+
+    </form>
+
+    <p id="message">
+      Test OTP request submitted
+    </p>
+
+    <p class="note">
+      Demo interface — no real SMS or OTP is sent.
+    </p>
+
+  </div>
+
+  <script>
+    const form = document.getElementById("otpForm");
+    const mobile = document.getElementById("mobile");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const number = mobile.value.trim();
+
+      if (!/^[6-9][0-9]{9}$/.test(number)) {
+        alert("Please enter a valid 10-digit Indian mobile number.");
+        return;
+      }
+
+      message.style.display = "block";
+    });
+  </script>
+
+</body>
+</html>
