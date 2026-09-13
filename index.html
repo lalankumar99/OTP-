@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>OTP Testing</title>
+  <title>OTP API Tester</title>
 
   <style>
     * {
@@ -16,89 +16,115 @@
 
     body {
       min-height: 100vh;
+      background: #f1f5f9;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #f2f5f9;
       padding: 20px;
     }
 
-    .login-card {
+    .container {
       width: 100%;
-      max-width: 380px;
-      background: #ffffff;
-      padding: 30px 25px;
+      max-width: 430px;
+    }
+
+    .tester-badge {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .tester-badge span {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: .5px;
+    }
+
+    .card {
+      background: white;
       border-radius: 18px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+      padding: 26px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.10);
     }
 
     .logo {
       width: 60px;
       height: 60px;
-      margin: 0 auto 18px;
+      margin: 0 auto 15px;
       border-radius: 50%;
       background: #2563eb;
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 25px;
       font-weight: bold;
+      font-size: 18px;
     }
 
     h1 {
       text-align: center;
-      font-size: 25px;
+      font-size: 24px;
       color: #111827;
-      margin-bottom: 8px;
     }
 
     .subtitle {
       text-align: center;
       color: #6b7280;
-      font-size: 14px;
-      margin-bottom: 25px;
+      font-size: 13px;
+      margin: 8px 0 22px;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 600;
+      margin: 14px 0 7px;
       color: #374151;
-    }
-
-    .phone-input {
-      display: flex;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 18px;
-    }
-
-    .country-code {
-      background: #f3f4f6;
-      padding: 13px 12px;
-      color: #374151;
-      font-size: 15px;
+      font-size: 13px;
+      font-weight: bold;
     }
 
     input {
       width: 100%;
-      border: none;
-      outline: none;
       padding: 13px;
-      font-size: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+    }
+
+    .phone {
+      display: flex;
+    }
+
+    .country {
+      padding: 13px 12px;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-right: none;
+      border-radius: 10px 0 0 10px;
+      color: #374151;
+    }
+
+    .phone input {
+      border-radius: 0 10px 10px 0;
     }
 
     button {
       width: 100%;
+      margin-top: 22px;
+      padding: 14px;
       border: none;
       border-radius: 10px;
-      padding: 14px;
       background: #2563eb;
       color: white;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: bold;
       cursor: pointer;
     }
@@ -107,85 +133,288 @@
       background: #1d4ed8;
     }
 
-    #message {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 14px;
-      color: #15803d;
-      display: none;
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
     }
 
-    .note {
-      text-align: center;
-      margin-top: 20px;
+    .result {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .success {
+      display: block;
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .error {
+      display: block;
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .info {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #1e40af;
       font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      text-align: center;
       color: #9ca3af;
+      font-size: 11px;
+      margin-top: 15px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="login-card">
+  <div class="container">
 
-    <div class="logo">OTP</div>
+    <div class="tester-badge">
+      <span>🧪 TESTER MODE</span>
+    </div>
 
-    <h1>OTP Testing</h1>
+    <div class="card">
 
-    <p class="subtitle">
-      Enter your mobile number to continue
-    </p>
+      <div class="logo">OTP</div>
 
-    <form id="otpForm">
+      <h1>OTP API Tester</h1>
 
-      <label for="mobile">Mobile Number</label>
+      <p class="subtitle">
+        Test your SMS API connection
+      </p>
 
-      <div class="phone-input">
-        <span class="country-code">+91</span>
+      <!-- API ENDPOINT -->
+      <label for="apiUrl">
+        API Endpoint
+      </label>
+
+      <input
+        type="url"
+        id="apiUrl"
+        placeholder="https://example.com/api/send"
+      >
+
+      <!-- API KEY -->
+      <label for="apiKey">
+        API Key
+      </label>
+
+      <input
+        type="password"
+        id="apiKey"
+        placeholder="Q5g1ZJeYhjAmFzT8dukOVbyvM6raHCPq3cpKNiEt7DX9L2xIBR0wR4ic9EbQapBUkyIGfjvTherX8nmA"
+        autocomplete="off"
+      >
+
+      <!-- MOBILE NUMBER -->
+      <label for="mobile">
+        Mobile Number
+      </label>
+
+      <div class="phone">
+        <span class="country">+91</span>
 
         <input
           type="tel"
           id="mobile"
-          placeholder="Enter 10-digit number"
+          placeholder="10-digit mobile number"
           maxlength="10"
           inputmode="numeric"
-          required
         >
       </div>
 
-      <button type="submit">
-        Submit
+      <button id="testButton" onclick="testAPI()">
+        Test API & Send OTP
       </button>
 
-    </form>
+      <div id="result" class="result"></div>
 
-    <p id="message">
-      Test OTP request submitted
-    </p>
+      <div class="info">
+        ℹ️ Tester Mode is enabled. The request will be sent
+        only when you press the button.
+      </div>
 
-    <p class="note">
-      Demo interface — no real SMS or OTP is sent.
-    </p>
+    </div>
+
+    <div class="footer">
+      OTP API Testing Tool • Development Use
+    </div>
 
   </div>
 
+
   <script>
-    const form = document.getElementById("otpForm");
-    const mobile = document.getElementById("mobile");
-    const message = document.getElementById("message");
 
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
+    async function testAPI() {
 
-      const number = mobile.value.trim();
+      const apiUrl =
+        document.getElementById("apiUrl").value.trim();
 
-      if (!/^[6-9][0-9]{9}$/.test(number)) {
-        alert("Please enter a valid 10-digit Indian mobile number.");
+      const apiKey =
+        document.getElementById("apiKey").value.trim();
+
+      const mobile =
+        document.getElementById("mobile").value.trim();
+
+      const button =
+        document.getElementById("testButton");
+
+      const result =
+        document.getElementById("result");
+
+
+      // Reset result
+      result.className = "result";
+      result.textContent = "";
+
+
+      // Validate API URL
+      if (!apiUrl) {
+        showError("Please enter your API Endpoint.");
         return;
       }
 
-      message.style.display = "block";
-    });
+
+      // Validate API Key
+      if (!apiKey) {
+        showError("Please enter your API Key.");
+        return;
+      }
+
+
+      // Validate mobile number
+      if (!/^[6-9][0-9]{9}$/.test(mobile)) {
+        showError(
+          "Please enter a valid 10-digit Indian mobile number."
+        );
+        return;
+      }
+
+
+      button.disabled = true;
+      button.textContent = "Testing API...";
+
+
+      try {
+
+        /*
+         * IMPORTANT
+         *
+         * यह generic API request है।
+         *
+         * हर SMS provider का request format
+         * अलग होता है।
+         *
+         * नीचे वाला format केवल example है।
+         *
+         * अपने provider की documentation के अनुसार
+         * body / headers बदलें।
+         */
+
+        const response = await fetch(apiUrl, {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+
+            /*
+             * अगर आपकी API Bearer token इस्तेमाल करती है:
+             *
+             * Authorization: "Bearer " + apiKey
+             *
+             * तो नीचे Authorization वाली line इस्तेमाल करें।
+             */
+
+            "Authorization": "Bearer " + apiKey
+          },
+
+          body: JSON.stringify({
+
+            mobile: "+91" + mobile,
+
+            /*
+             * कुछ providers में field का नाम
+             * phone / number / to होता है।
+             */
+
+            message: "Your OTP is {{otp}}"
+
+          })
+
+        });
+
+
+        const text = await response.text();
+
+
+        if (response.ok) {
+
+          result.className = "result success";
+
+          result.textContent =
+            "✅ API Request Successful\n\n" +
+            "HTTP Status: " + response.status + "\n\n" +
+            "Response:\n" + text;
+
+        } else {
+
+          result.className = "result error";
+
+          result.textContent =
+            "❌ API Request Failed\n\n" +
+            "HTTP Status: " + response.status + "\n\n" +
+            "Response:\n" + text;
+
+        }
+
+
+      } catch (error) {
+
+        result.className = "result error";
+
+        result.textContent =
+          "❌ Request Error\n\n" +
+          error.message +
+          "\n\n" +
+          "अगर browser CORS error दिखा रहा है, " +
+          "तो API को backend/server से call करना पड़ेगा।";
+
+      }
+
+
+      button.disabled = false;
+      button.textContent = "Test API & Send OTP";
+
+    }
+
+
+    function showError(message) {
+
+      const result =
+        document.getElementById("result");
+
+      result.className = "result error";
+
+      result.textContent = "⚠️ " + message;
+
+    }
+
   </script>
 
 </body>
